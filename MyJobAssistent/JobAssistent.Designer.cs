@@ -37,9 +37,9 @@ namespace MyJobAssistent
             // 
             // BtnHealthReporter
             // 
-            this.BtnHealthReporter.Location = new System.Drawing.Point(684, 89);
+            this.BtnHealthReporter.Location = new System.Drawing.Point(653, 88);
             this.BtnHealthReporter.Name = "BtnHealthReporter";
-            this.BtnHealthReporter.Size = new System.Drawing.Size(101, 36);
+            this.BtnHealthReporter.Size = new System.Drawing.Size(135, 36);
             this.BtnHealthReporter.TabIndex = 0;
             this.BtnHealthReporter.Text = "Health Config";
             this.BtnHealthReporter.UseVisualStyleBackColor = true;
@@ -47,9 +47,9 @@ namespace MyJobAssistent
             // 
             // BtnJobSchedular
             // 
-            this.BtnJobSchedular.Location = new System.Drawing.Point(684, 150);
+            this.BtnJobSchedular.Location = new System.Drawing.Point(653, 148);
             this.BtnJobSchedular.Name = "BtnJobSchedular";
-            this.BtnJobSchedular.Size = new System.Drawing.Size(104, 36);
+            this.BtnJobSchedular.Size = new System.Drawing.Size(135, 36);
             this.BtnJobSchedular.TabIndex = 1;
             this.BtnJobSchedular.Text = "Job Schedular";
             this.BtnJobSchedular.UseVisualStyleBackColor = true;
@@ -57,9 +57,9 @@ namespace MyJobAssistent
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(684, 30);
+            this.btnRefresh.Location = new System.Drawing.Point(653, 28);
             this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(101, 36);
+            this.btnRefresh.Size = new System.Drawing.Size(135, 36);
             this.btnRefresh.TabIndex = 2;
             this.btnRefresh.Text = "Refresh";
             this.btnRefresh.UseVisualStyleBackColor = true;
@@ -70,9 +70,9 @@ namespace MyJobAssistent
             this.verticalLayoutPanel.AutoScroll = true;
             this.verticalLayoutPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.verticalLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.verticalLayoutPanel.Location = new System.Drawing.Point(32, 28);
+            this.verticalLayoutPanel.Location = new System.Drawing.Point(12, 28);
             this.verticalLayoutPanel.Name = "verticalLayoutPanel";
-            this.verticalLayoutPanel.Size = new System.Drawing.Size(611, 385);
+            this.verticalLayoutPanel.Size = new System.Drawing.Size(635, 410);
             this.verticalLayoutPanel.TabIndex = 3;
             // 
             // JobAssistent

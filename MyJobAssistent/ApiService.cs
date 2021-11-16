@@ -17,8 +17,8 @@ namespace MyJobAssistent
         {
             _appHealthConfigs = new List<AppHealthConfig>
             {
-                new AppHealthConfig{ EndpointName= "FirstPanel", EndPoint = "https://papi.liveoptics-dev.com/v2/api/health", ApiType="Web API", BackColor = Color.Red },
-                new AppHealthConfig{ EndpointName= "SecondPanel", EndPoint = "https://restartservice.free.beeceptor.com/", ApiType="Web API", BackColor = Color.Red }
+                new AppHealthConfig{ EndpointName= "FirstPanel", EndPoint = "https://papi.liveoptics-dev.com/v2/api/health", ApiType="Web API" },
+                //new AppHealthConfig{ EndpointName= "SecondPanel", EndPoint = "https://restartservice.free.beeceptor.com/", ApiType="Web API" }
             };
         }
 
@@ -30,7 +30,7 @@ namespace MyJobAssistent
             {
                 AppHealthStatus appHealthStatus = await GetApiHealth(appHealthConfig);
 
-                if (appHealthStatus.Status == "Healthy")
+                if (appHealthStatus.Status == AppHealthStatus.Healthy)
                     appHealthConfig.BackColor = Color.Green;
 
                 appHealthConfigs.Add(appHealthConfig);

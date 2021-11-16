@@ -12,31 +12,36 @@ namespace MyJobAssistent
 {
     public partial class HealthConfig : Form
     {
-        bool OkBtnVisibility = false;
         ApiService _apiService;
+        int YLocation = 20;
         public HealthConfig()
         {
             InitializeComponent();
             _apiService = new ApiService();
         }
 
-        private void btnAddEndPoint_Click(object sender, EventArgs e)
+        private void BtnAddEndPoint_Click(object sender, EventArgs e)
         {
-
+            verticalLayoutPanel.Controls.Add(GetHorizontalPanel(new AppHealthConfig { }, YLocation = YLocation + 50));
+        }
+        private void BtnActionRow_Click(object sender, EventArgs e)
+        {
+            JobSchedular jobSchedular = new JobSchedular();
+            jobSchedular.ShowDialog();
         }
 
         private async void HealthConfig_Load(object sender, EventArgs e)
         {
-            var yLoc = 20;
+            YLocation = 20;
             List<AppHealthConfig> appHealthConfigs = await _apiService.GetHealthStatus();
 
             verticalLayoutPanel.Controls.Clear();
             verticalLayoutPanel.SuspendLayout();
-            verticalLayoutPanel.Controls.Add(GetHeaderPanel(yLoc));
+            verticalLayoutPanel.Controls.Add(GetHeaderPanel(YLocation));
 
             foreach (var appHealthConfig in appHealthConfigs)
             {
-                verticalLayoutPanel.Controls.Add(GetHorizontalPanel(appHealthConfig, yLoc = yLoc + 50));
+                verticalLayoutPanel.Controls.Add(GetHorizontalPanel(appHealthConfig, YLocation = YLocation + 50));
             }
 
             this.Controls.Add(verticalLayoutPanel);
@@ -51,14 +56,22 @@ namespace MyJobAssistent
             panel.FlowDirection = FlowDirection.LeftToRight;
             panel.WrapContents = false;
 
-            Label lblEndPoint = new Label { Text = appHealthConfig.EndPoint, Size = new Size { Width = 450, Height = 24 }, Location = new Point(157, yLoc) };
-            panel.Controls.Add(lblEndPoint);
+            TextBox txtEndPoint = new TextBox { Text = appHealthConfig.EndPoint, Size = new Size { Width = 350, Height = 24 }, Location = new Point(157, yLoc) };
+            panel.Controls.Add(txtEndPoint);
 
-            Label lblApiType = new Label { Text = appHealthConfig.ApiType, Size = new Size { Width = 50, Height = 24 }, Location = new Point(757, yLoc) };
-            panel.Controls.Add(lblApiType);
+            ComboBox cmbApiType = new ComboBox { Size = new Size { Width = 100, Height = 24 }, Location = new Point(657, yLoc) };
+            cmbApiType.Items.AddRange((new List<string> { "Web API", "Windows Service", "Wcf Service", "Remoting" }).ToArray());            
+            cmbApiType.Text = appHealthConfig.ApiType;
+            panel.Controls.Add(cmbApiType);
 
-            Label lblApiStatus = new Label { BackColor = appHealthConfig.BackColor, Size = new Size { Width = 12, Height = 12 }, Location = new Point(857, yLoc), Margin = new Padding { Left = 20 } };
-            panel.Controls.Add(lblApiStatus);
+            Button btnApiAction = new Button { Text="Action",  Location = new Point(807, yLoc), Margin = new Padding { Left = 20 } };
+            btnApiAction.Click += BtnActionRow_Click;
+            panel.Controls.Add(btnApiAction);
+
+            Button btnAddRow = new Button { Text = "+", Size = new Size { Width = 22, Height = 25 }, Location = new Point(857, yLoc), Margin = new Padding { Left = 20 } };
+            btnAddRow.Click += BtnAddEndPoint_Click;
+            panel.Controls.Add(btnAddRow);
+
             return panel;
         }
         private FlowLayoutPanel GetHeaderPanel(int yLocation)
@@ -70,10 +83,10 @@ namespace MyJobAssistent
             panel.FlowDirection = FlowDirection.LeftToRight;
             panel.WrapContents = false;
 
-            Label lblEndPoint = new Label { Text = "Endpoint to Connect", Size = new Size { Width = 450, Height = 24 }, Location = new Point(157, yLocation) };
+            Label lblEndPoint = new Label { Text = "Endpoint to Connect", Size = new Size { Width = 350, Height = 24 }, Location = new Point(157, yLocation) };
             panel.Controls.Add(lblEndPoint);
 
-            Label lblApiType = new Label { Text = "Type", Size = new Size { Width = 50, Height = 24 }, Location = new Point(757, yLocation) };
+            Label lblApiType = new Label { Text = "Type", Size = new Size { Width = 100, Height = 24 }, Location = new Point(657, yLocation) };
             panel.Controls.Add(lblApiType);
 
            
@@ -82,32 +95,17 @@ namespace MyJobAssistent
 
         private void btnAnalyzeAndShow_Click(object sender, EventArgs e)
         {
-            ToggleButtons();
             //Call the confiured api
         }
 
         private void btnAnalyzeAndSend_Click(object sender, EventArgs e)
         {
-            ToggleButtons();
             MessageBox.Show("Analysis sent");
-        }
-
-        private void ToggleButtons()
-        {
-            btnOk.Visible = OkBtnVisibility;
-            btnOk1.Visible = OkBtnVisibility;
-            btnOk2.Visible = OkBtnVisibility;
-            btnErrored.Visible = !OkBtnVisibility;
-            btnErrored2.Visible = !OkBtnVisibility;
-            btnErrored3.Visible = !OkBtnVisibility;
-            OkBtnVisibility = !OkBtnVisibility;
         }
 
         private void btnSaveConfig_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Configuration Saved");
-        }
-
-        
+        }        
     }
 }

@@ -19,5 +19,7 @@ namespace MyJobAssistent
         public string[] Results { get; set; }
 
         public string TotalResponseTime { get; set; }
+
+        public static string Healthy { get { return "Healthy"; } }
     }
 }
