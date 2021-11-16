@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31702.278
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrgHealthManager", "MyJobAssistent\OrgHealthManager.csproj", "{469F1094-3962-4BD9-81F2-21FB810A792D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{469F1094-3962-4BD9-81F2-21FB810A792D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{469F1094-3962-4BD9-81F2-21FB810A792D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{469F1094-3962-4BD9-81F2-21FB810A792D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{469F1094-3962-4BD9-81F2-21FB810A792D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7F54EBC5-CA04-4363-8B74-E9234D4D93E5}
+	EndGlobalSection
+EndGlobal
