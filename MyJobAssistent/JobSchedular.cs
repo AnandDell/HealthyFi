@@ -13,10 +13,8 @@ namespace MyJobAssistent
     public partial class JobSchedular : Form
     {
         public AppHealthActionConfig AppHealthAction { get; private set; }
-        public JobSchedular()
-        {
-            InitializeComponent();
-        }
+        ApiService _apiService = new ApiService();
+
 
         public JobSchedular(AppHealthActionConfig appHealthAction)
         {
@@ -31,32 +29,45 @@ namespace MyJobAssistent
         {
             DateSchedular schedular = new DateSchedular(AppHealthAction);
             schedular.ShowDialog();
+            AppHealthAction.EndPoint = txtEndPoint.Text;
+            AppHealthAction.ActionEndpoint = txtJobEndPoint.Text;
+            AppHealthAction.ActionEndpointType = cmbBoxJobType.Text;
+            AppHealthAction.IsTriggeredByDateTime = true;
+            AppHealthAction.IsTriggeredByEmail = false;
+            AppHealthAction.IsTriggeredByNotification = false;
         }
 
         private void btnEmailInitiator_Click(object sender, EventArgs e)
         {
             EmailSchedular schedular = new EmailSchedular(AppHealthAction);
             schedular.ShowDialog();
+            AppHealthAction.EndPoint = txtEndPoint.Text;
+            AppHealthAction.ActionEndpoint = txtJobEndPoint.Text;
+            AppHealthAction.ActionEndpointType = cmbBoxJobType.Text;
+            AppHealthAction.IsTriggeredByDateTime = false;
+            AppHealthAction.IsTriggeredByEmail = true;
+            AppHealthAction.IsTriggeredByNotification = false;
         }
 
         private void btnNotificationInititor_Click(object sender, EventArgs e)
         {
             NotificationSchedular schedular = new NotificationSchedular(AppHealthAction);
             schedular.ShowDialog();
+            AppHealthAction.EndPoint = txtEndPoint.Text;
+            AppHealthAction.ActionEndpoint = txtJobEndPoint.Text;
+            AppHealthAction.ActionEndpointType = cmbBoxJobType.Text;
+            AppHealthAction.IsTriggeredByDateTime = false;
+            AppHealthAction.IsTriggeredByEmail = false;
+            AppHealthAction.IsTriggeredByNotification = true;
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private async void btnSave_Click(object sender, EventArgs e)
         {
+            AppHealthAction.EndPoint = txtEndPoint.Text;
             AppHealthAction.ActionEndpoint = txtJobEndPoint.Text;
             AppHealthAction.ActionEndpointType = txtJobEndPoint.Text;
+            await _apiService.UpdateHealthConfig(AppHealthAction);
             MessageBox.Show("Job saved");
-            this.Close();
-        }
-        
-        private void btnExecute_Click(object sender, EventArgs e)
-        {
-
-            MessageBox.Show("Job started");
             this.Close();
         }
     }

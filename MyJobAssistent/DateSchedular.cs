@@ -36,6 +36,7 @@ namespace MyJobAssistent
             AppHealthAction.Daily = checkBox1.Enabled;
             AppHealthAction.Weekly = checkBox2.Enabled;
             AppHealthAction.Monthly = checkBox3.Enabled;
+            AppHealthAction.IsTriggeredByDateTime = true;
             MessageBox.Show("Job Scheduled");
             this.Close();
         }

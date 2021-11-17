@@ -33,7 +33,7 @@ namespace MyJobAssistent
 
         private void JobSchedular_Click(object sender, EventArgs e)
         {
-            JobSchedular jobSchedular = new JobSchedular();
+            JobSchedular jobSchedular = new JobSchedular(new AppHealthActionConfig { });
             jobSchedular.ShowDialog();
         }
 
@@ -68,7 +68,7 @@ namespace MyJobAssistent
             panel.FlowDirection = FlowDirection.LeftToRight;
             panel.WrapContents = false;
 
-            Label lblEndPoint = new Label { Text = "Endpoint to Connect", Size = new Size { Width = 450, Height = 24 }, Location = new Point(157, yLocation) };
+            Label lblEndPoint = new Label { Text = "Endpoint to connect", Size = new Size { Width = 450, Height = 24 }, Location = new Point(157, yLocation) };
             panel.Controls.Add(lblEndPoint);
 
             Label lblApiType = new Label { Text = "Type", Size = new Size { Width = 50, Height = 24 }, Location = new Point(757, yLocation) };
@@ -103,8 +103,8 @@ namespace MyJobAssistent
         {
             Timer timer = new Timer();
             timer.Interval = (10 * 1000); // sleep for 1 minute
-            timer.Tick += Timer_Tick;
-            timer.Start();
+            //timer.Tick += Timer_Tick;
+            //timer.Start();
         }
 
         private async void Timer_Tick(object sender, EventArgs e)
@@ -120,9 +120,9 @@ namespace MyJobAssistent
                     }
                     else if (appHealthConfig.IsTriggeredByDateTime)
                     {
-                        if (appHealthConfig.TimeToExecute.ToString("MM/dd/yyyy hh:mm") == DateTime.Now.ToString("MM/dd/yyyy hh:mm"))
+                        if (appHealthConfig.TimeToExecute <= DateTime.Now)
                         {
-                            await EmailHelper.CheckForRestart(appHealthConfig);
+                            await EmailHelper.CallAPI(appHealthConfig.ActionEndpoint);
                         }
                     }
                 }
