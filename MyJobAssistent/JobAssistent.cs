@@ -19,10 +19,16 @@ namespace MyJobAssistent
             _apiService = new ApiService();
         }
 
-        private void HealthReporter_Click(object sender, EventArgs e)
+        private async void HealthReporter_Click(object sender, EventArgs e)
         {
-            HealthConfig healthReporter = new HealthConfig();
-            healthReporter.ShowDialog();
+            using (HealthConfig healthReporter = new HealthConfig())
+            {
+                healthReporter.ShowDialog();
+                if (healthReporter.RefreshParent)
+                {
+                    await FormRefresh();
+                }
+            }
         }
 
         private void JobSchedular_Click(object sender, EventArgs e)
@@ -33,14 +39,19 @@ namespace MyJobAssistent
 
         private async void btnRefresh_Click(object sender, EventArgs e)
         {
+            await FormRefresh();
+        }
+
+        private async Task FormRefresh()
+        {
             var yLoc = 20;
             List<AppHealthConfig> appHealthConfigs = await _apiService.GetHealthStatus();
 
             verticalLayoutPanel.Controls.Clear();
-            verticalLayoutPanel.SuspendLayout();            
+            verticalLayoutPanel.SuspendLayout();
             verticalLayoutPanel.Controls.Add(GetHeaderPanel(yLoc));
 
-            foreach(var appHealthConfig in appHealthConfigs)
+            foreach (var appHealthConfig in appHealthConfigs)
             {
                 verticalLayoutPanel.Controls.Add(GetHorizontalPanel(appHealthConfig, yLoc = yLoc + 50));
             }

@@ -12,8 +12,15 @@ namespace MyJobAssistent
 {
     public partial class NotificationSchedular : Form
     {
+        AppHealthActionConfig _appHealthAction;
         public NotificationSchedular()
         {
+            InitializeComponent();
+        }
+
+        public NotificationSchedular(AppHealthActionConfig appHealthAction)
+        {
+            _appHealthAction = appHealthAction;
             InitializeComponent();
         }
 

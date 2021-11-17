@@ -100,7 +100,7 @@ namespace MyJobAssistent
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(298, 20);
             this.textBox2.TabIndex = 3;
-            this.textBox2.Text = "Start.ConfiguredJob@dell.com";
+            this.textBox2.Text = "hackathondell2021@gmail.com";
             // 
             // textBox1
             // 

@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiService.cs" />
+    <Compile Include="AppHealthActionConfig.cs" />
     <Compile Include="AppHealthStatus.cs" />
     <Compile Include="DateSchedular.cs">
       <SubType>Form</SubType>
@@ -63,7 +64,7 @@
     <Compile Include="EmailSchedular.Designer.cs">
       <DependentUpon>EmailSchedular.cs</DependentUpon>
     </Compile>
-    <Compile Include="EndPointConfig.cs" />
+    <Compile Include="AppHealthConfig.cs" />
     <Compile Include="HealthConfig.cs">
       <SubType>Form</SubType>
     </Compile>
