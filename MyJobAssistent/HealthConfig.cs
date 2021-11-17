@@ -24,7 +24,7 @@ namespace MyJobAssistent
 
         private void BtnAddEndPoint_Click(object sender, EventArgs e)
         {
-            verticalLayoutPanel.Controls.Add(GetHorizontalPanel(new AppHealthConfig { }, YLocation = YLocation + 50));
+            verticalLayoutPanel.Controls.Add(GetHorizontalPanel(new AppHealthActionConfig { }, YLocation = YLocation + 50));
         }
         private async void BtnActionRow_Click(object sender, EventArgs e)
         {
@@ -60,7 +60,7 @@ namespace MyJobAssistent
         private async void HealthConfig_Load(object sender, EventArgs e)
         {
             YLocation = 20;
-            List<AppHealthActionConfig> appHealthConfigs = await _apiService.GetHealthStatusList();
+            List<AppHealthActionConfig> appHealthConfigs = await _apiService.GetAppHealthActionConfigList();
 
             verticalLayoutPanel.Controls.Clear();
             verticalLayoutPanel.SuspendLayout();
@@ -74,7 +74,7 @@ namespace MyJobAssistent
             this.Controls.Add(verticalLayoutPanel);
         }
 
-        private FlowLayoutPanel GetHorizontalPanel(AppHealthConfig appHealthConfig, int yLoc)
+        private FlowLayoutPanel GetHorizontalPanel(AppHealthActionConfig appHealthConfig, int yLoc)
         {
             FlowLayoutPanel panel = new FlowLayoutPanel();
             panel.Name = appHealthConfig.EndpointName;
@@ -137,7 +137,10 @@ namespace MyJobAssistent
 
         private async void btnAnalyzeAndSend_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Analysis sent");
+            EmailHelper.SendMail(await _apiService.GetHealthStatusList());
+
+            MessageBox.Show("Email sent successfully.");
+
             this.Close();
         }
 

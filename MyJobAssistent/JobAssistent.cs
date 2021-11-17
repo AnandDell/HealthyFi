@@ -33,7 +33,7 @@ namespace MyJobAssistent
 
         private void JobSchedular_Click(object sender, EventArgs e)
         {
-            JobSchedular jobSchedular = new JobSchedular();
+            JobSchedular jobSchedular = new JobSchedular(new AppHealthActionConfig { });
             jobSchedular.ShowDialog();
         }
 
@@ -68,7 +68,7 @@ namespace MyJobAssistent
             panel.FlowDirection = FlowDirection.LeftToRight;
             panel.WrapContents = false;
 
-            Label lblEndPoint = new Label { Text = "Endpoint to Connect", Size = new Size { Width = 450, Height = 24 }, Location = new Point(157, yLocation) };
+            Label lblEndPoint = new Label { Text = "Endpoint to connect", Size = new Size { Width = 450, Height = 24 }, Location = new Point(157, yLocation) };
             panel.Controls.Add(lblEndPoint);
 
             Label lblApiType = new Label { Text = "Type", Size = new Size { Width = 50, Height = 24 }, Location = new Point(757, yLocation) };
@@ -79,7 +79,7 @@ namespace MyJobAssistent
             return panel;
         }
 
-        private FlowLayoutPanel GetHorizontalPanel(AppHealthConfig appHealthConfig, int yLoc)
+        private FlowLayoutPanel GetHorizontalPanel(AppHealthActionConfig appHealthConfig, int yLoc)
         {
             FlowLayoutPanel panel = new FlowLayoutPanel();
             panel.Name = appHealthConfig.EndpointName;
@@ -105,17 +105,45 @@ namespace MyJobAssistent
             timer.Interval = (60 * 1000); // sleep for 1 minute
             timer.Tick += Timer_Tick;
             timer.Start();
+            //hasStarted = true;
         }
+
+        //bool hasStarted = false;
 
         private async void Timer_Tick(object sender, EventArgs e)
         {
-            foreach (var appHealthConfig in _apiService._appHealthConfigs)
+            //if (!hasStarted)
+            //{
+            //    return;
+            //}
+
+            var configs = await _apiService.GetAppHealthActionConfigList();
+            foreach (var appHealthConfig in configs)
             {
-                if (appHealthConfig.IsTriggeredByEmail)
+                try
                 {
-                    await EmailHelper.CheckForRestart(appHealthConfig);
+                    if (appHealthConfig.IsTriggeredByEmail)
+                    {
+                        await EmailHelper.CheckForRestart(appHealthConfig);
+                    }
+                    else if (appHealthConfig.IsTriggeredByDateTime)
+                    {
+                        if (appHealthConfig.TimeToExecute.ToString("MM/dd/yyyy hh:mm") == DateTime.Now.ToString("MM/dd/yyyy hh:mm"))
+                        {
+                            await EmailHelper.CheckForRestart(appHealthConfig);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+
                 }
             }
+
+            //if (hasStarted)
+            //{
+            //    hasStarted = false;
+            //}
         }
     }
 }

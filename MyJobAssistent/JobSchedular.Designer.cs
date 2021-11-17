@@ -38,7 +38,6 @@ namespace MyJobAssistent
             this.btnEmailInitiator = new System.Windows.Forms.Button();
             this.btnSchedule = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
-            this.btnExecute = new System.Windows.Forms.Button();
             this.cmbBoxJobType = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.txtEndPoint = new System.Windows.Forms.TextBox();
@@ -139,16 +138,6 @@ namespace MyJobAssistent
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // btnExecute
-            // 
-            this.btnExecute.Location = new System.Drawing.Point(335, 377);
-            this.btnExecute.Name = "btnExecute";
-            this.btnExecute.Size = new System.Drawing.Size(125, 36);
-            this.btnExecute.TabIndex = 7;
-            this.btnExecute.Text = "Execute";
-            this.btnExecute.UseVisualStyleBackColor = true;
-            this.btnExecute.Click += new System.EventHandler(this.btnExecute_Click);
-            // 
             // cmbBoxJobType
             // 
             this.cmbBoxJobType.FormattingEnabled = true;
@@ -197,7 +186,6 @@ namespace MyJobAssistent
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.cmbBoxJobType);
-            this.Controls.Add(this.btnExecute);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.txtJobEndPoint);
@@ -223,7 +211,6 @@ namespace MyJobAssistent
         private System.Windows.Forms.Button btnNotificationInititor;
         private System.Windows.Forms.Button btnEmailInitiator;
         private System.Windows.Forms.Button btnSave;
-        private System.Windows.Forms.Button btnExecute;
         private System.Windows.Forms.ComboBox cmbBoxJobType;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtEndPoint;

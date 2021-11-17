@@ -4,6 +4,8 @@ using Google.Apis.Gmail.v1.Data;
 using Google.Apis.Services;
 using Google.Apis.Util.Store;
 using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -64,10 +66,6 @@ namespace MyJobAssistent
         static string[] BodySubstrings = { "urgently required to restart service" };
         static GmailService Service;
 
-        static string UrlHealthOfServer = "http://dellrestapi-env.eba-enmpcutb.us-east-2.elasticbeanstalk.com/health";
-        static string UrlSetUnhealth = "http://dellrestapi-env.eba-enmpcutb.us-east-2.elasticbeanstalk.com/health/error%20heart%202";
-        static string UrlSetHealty = "http://dellrestapi-env.eba-enmpcutb.us-east-2.elasticbeanstalk.com/health/healthy";
-
         public static async Task CheckForRestart(AppHealthActionConfig appHealthActionConfig)
         {
             //
@@ -126,7 +124,10 @@ namespace MyJobAssistent
                                             byte[] data = FromBase64ForUrlString(p.Body.Data);
                                             body = Encoding.UTF8.GetString(data);
 
-                                            await CheckForTrigger(from, subject, body);
+                                            if (await CheckForTrigger(from, subject, body))
+                                            {
+                                                await CallAPI(appHealthActionConfig.ActionEndpoint);
+                                            }
                                             breakLoop = true;
                                             break;
                                         }
@@ -137,7 +138,10 @@ namespace MyJobAssistent
                                     byte[] data = FromBase64ForUrlString(emailInfoResponse.Payload.Body.Data);
                                     body = Encoding.UTF8.GetString(data);
 
-                                    await CheckForTrigger(from, subject, body);
+                                    if (await CheckForTrigger(from, subject, body))
+                                    {
+                                        await CallAPI(appHealthActionConfig.ActionEndpoint);
+                                    }
                                     breakLoop = true;
                                     break;
                                 }
@@ -169,7 +173,7 @@ namespace MyJobAssistent
             return Convert.FromBase64String(result.ToString());
         }
 
-        public static async Task CheckForTrigger(string from, string subject, string body)
+        public static async Task<bool> CheckForTrigger(string from, string subject, string body)
         {
             if (FromAddresses.Any(fromAdd => from.ToLower().Contains(fromAdd.ToLower()))
                 && Subjects.Any(sub => subject.ToLower().Contains(sub.ToLower()))
@@ -178,8 +182,10 @@ namespace MyJobAssistent
                 //
                 // Can API to set reset
                 //
-                await CallAPI(UrlSetHealty);
+                return true;
             }
+
+            return false;
         }
 
         public static void SendMail()
@@ -194,12 +200,12 @@ namespace MyJobAssistent
             Service.Users.Messages.Send(newMsg, "me").Execute();
         }
 
-        public static void SendMail(AppHealthActionConfig appHealthActionConfig)
+        public static void SendMail(string to, string subject, string body)
         {
-            string plainText = $"To: {ToMailAddress}\r\n" +
-                               $"Subject: {appHealthActionConfig.EmailSubject}\r\n" +
+            string plainText = $"To: {to}\r\n" +
+                               $"Subject: {subject}\r\n" +
                                "Content-Type: text/html; charset=us-ascii\r\n\r\n" +
-                               $"{appHealthActionConfig.EmailBody}";
+                               $"{body}";
 
             var newMsg = new Google.Apis.Gmail.v1.Data.Message();
             newMsg.Raw = Base64UrlEncode(plainText.ToString());
@@ -216,5 +222,62 @@ namespace MyJobAssistent
             var content = resulthealth.Content.ReadAsStringAsync().Result;
         }
 
-    }
+
+        public static void SendMail(List<AppHealthActionConfig> config)
+        {
+            if (!config.Any())
+            {
+                return;
+            }
+
+            StringBuilder _sb = new StringBuilder();
+
+            _sb.Append($"<table>\n");
+            _sb.Append("<tbody>");
+
+            _sb.Append("\t<tr>\n");
+
+            _sb.Append("\t\t<td align='left' style='font-weight: bold;'>\n");
+            _sb.Append("\t\t\t" + "Endpoint" + "\t\t\t");
+            _sb.Append("\t\t</td>\n");
+
+            _sb.Append("\t\t<td width='50' style='font-weight: bold;margin-left: 20;'>\n");
+            _sb.Append("\t\t\t" + "Type" + "\t\t\t");
+            _sb.Append("\t\t</td>\n");
+
+            _sb.Append("\t\t<td style='font-weight: bold;'>\n");
+            _sb.Append("\t\t\t" + "Status");
+            _sb.Append("\t\t</td>\n");
+
+            _sb.Append("\t</tr>\n");
+
+            foreach (var item in config)
+            {
+                _sb.Append("\t<tr>\n");
+
+                _sb.Append("\t\t<td>\n");
+                _sb.Append("\t\t\t" + item.EndPoint + "\t\t\t");
+                _sb.Append("\t\t</td>\n");
+
+                _sb.Append("\t\t<td width='100' style='margin-left: 20;'>\n");
+                _sb.Append("\t\t\t" + item.ApiType + "\t\t\t");
+                _sb.Append("\t\t</td>\n");
+
+                _sb.Append("\t\t<td>\n");
+                _sb.Append("\t\t\t" + (item.BackColor == Color.Red ? "   Error" : "   Success"));
+                _sb.Append("\t\t</td>\n");
+
+                _sb.Append("\t</tr>\n");
+            }
+
+            _sb.Append("</tbody>");
+            _sb.Append("</table>");
+
+            string body = _sb.ToString();
+
+            SendMail("Anand_Kumar_tripathi@Dell.com;Prabal_Khajanchi@Dell.com;Ajeya.Kumar@Dell.com;Jitesh_Kumaradesara@Dell.com;Pinkey_Ratnani@Dell.com;Sachin_Koshti@Dell.com", "Endpoint status.", body);
+        }
+
+
+    } // email helper
 }

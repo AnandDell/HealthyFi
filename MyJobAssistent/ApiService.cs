@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -12,13 +13,19 @@ namespace MyJobAssistent
 {
     public class ApiService
     {
-        static List<AppHealthActionConfig> _appHealthConfigs = new List<AppHealthActionConfig>
+        List<AppHealthActionConfig> _appHealthConfigs = new List<AppHealthActionConfig>
             {
-                new AppHealthActionConfig{ EndpointName= "FirstApi", EndPoint = "https://papi.liveoptics-dev.com/v2/api/health", ApiType="Web API" },
-                //new AppHealthActionConfig{ EndpointName= "SecondApi", EndPoint = "http://dellrestapi-env.eba-enmpcutb.us-east-2.elasticbeanstalk.com/health", ApiType="Web API" }
+                new AppHealthActionConfig{ EndpointName= "FirstApi", EndPoint = "http://dellrestapi-env.eba-enmpcutb.us-east-2.elasticbeanstalk.com/health", ApiType="Web API" }
             };
         public ApiService()
         {
+            try
+            {
+                string json = File.ReadAllText("AppHealthActionConfig.json");
+                var appHealthActionConfigs = JsonConvert.DeserializeObject<List<AppHealthActionConfig>>(json);
+                _appHealthConfigs = appHealthActionConfigs;
+            }
+            catch { }
         }        
 
         public async Task<List<AppHealthActionConfig>> GetHealthStatusList()
@@ -29,7 +36,7 @@ namespace MyJobAssistent
             {
                 AppHealthStatus appHealthStatus = await GetApiHealth(appHealthConfig);
 
-                if (appHealthStatus.Status == AppHealthStatus.Healthy)
+                if (appHealthStatus.Status?.ToLower() == AppHealthStatus.Healthy.ToLower())
                     appHealthConfig.BackColor = Color.Green;
 
                 appHealthConfigs.Add(appHealthConfig);
@@ -48,7 +55,7 @@ namespace MyJobAssistent
             return _appHealthConfigs;
         }
 
-        public async Task<AppHealthStatus> GetApiHealth(AppHealthConfig appHealthConfig)
+        public async Task<AppHealthStatus> GetApiHealth(AppHealthActionConfig appHealthConfig)
         {
             using (var httpClient = new HttpClient())
             {
@@ -63,6 +70,7 @@ namespace MyJobAssistent
         public async Task<List<AppHealthActionConfig>> SaveHealthConfigs(List<AppHealthActionConfig> appHealthConfigs)
         {
             _appHealthConfigs = appHealthConfigs;
+            File.WriteAllText("AppHealthActionConfig.json", JsonConvert.SerializeObject(appHealthConfigs));
             return appHealthConfigs;
         }
 
@@ -72,6 +80,7 @@ namespace MyJobAssistent
             if (appHealthConfigObj == null)
             {
                 _appHealthConfigs.Add(appHealthConfig);
+                File.WriteAllText("AppHealthActionConfig.json", JsonConvert.SerializeObject(_appHealthConfigs));
                 return _appHealthConfigs;
             }
 
@@ -83,6 +92,7 @@ namespace MyJobAssistent
                     _appHealthConfigs[counter] = appHealthConfig;
                 }
             }
+            File.WriteAllText("AppHealthActionConfig.json", JsonConvert.SerializeObject(_appHealthConfigs));
             return _appHealthConfigs;
         }
     }
