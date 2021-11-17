@@ -12,10 +12,10 @@ namespace MyJobAssistent
 {
     public class ApiService
     {
-        static List<AppHealthActionConfig> _appHealthConfigs = new List<AppHealthActionConfig>
+        public static List<AppHealthActionConfig> _appHealthConfigs = new List<AppHealthActionConfig>
             {
                 new AppHealthActionConfig{ EndpointName= "FirstApi", EndPoint = "https://papi.liveoptics-dev.com/v2/api/health", ApiType="Web API" },
-                //new AppHealthActionConfig{ EndpointName= "SecondApi", EndPoint = "http://dellrestapi-env.eba-enmpcutb.us-east-2.elasticbeanstalk.com/health", ApiType="Web API" }
+                new AppHealthActionConfig{ EndpointName= "SecondApi", EndPoint = "http://dellrestapi-env.eba-enmpcutb.us-east-2.elasticbeanstalk.com/health", ApiType="Web API" }
             };
         public ApiService()
         {
@@ -29,7 +29,7 @@ namespace MyJobAssistent
             {
                 AppHealthStatus appHealthStatus = await GetApiHealth(appHealthConfig);
 
-                if (appHealthStatus.Status == AppHealthStatus.Healthy)
+                if (appHealthStatus.Status?.ToLower() == AppHealthStatus.Healthy.ToLower())
                     appHealthConfig.BackColor = Color.Green;
 
                 appHealthConfigs.Add(appHealthConfig);

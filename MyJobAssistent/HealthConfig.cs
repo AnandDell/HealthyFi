@@ -60,7 +60,7 @@ namespace MyJobAssistent
         private async void HealthConfig_Load(object sender, EventArgs e)
         {
             YLocation = 20;
-            List<AppHealthActionConfig> appHealthConfigs = await _apiService.GetHealthStatusList();
+            List<AppHealthActionConfig> appHealthConfigs = await _apiService.GetAppHealthActionConfigList();
 
             verticalLayoutPanel.Controls.Clear();
             verticalLayoutPanel.SuspendLayout();
