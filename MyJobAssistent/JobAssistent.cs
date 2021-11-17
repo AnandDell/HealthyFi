@@ -128,9 +128,9 @@ namespace MyJobAssistent
                     }
                     else if (appHealthConfig.IsTriggeredByDateTime)
                     {
-                        if (appHealthConfig.TimeToExecute.ToString("MM/dd/yyyy hh:mm") == DateTime.Now.ToString("MM/dd/yyyy hh:mm"))
+                        if (appHealthConfig.TimeToExecute<= DateTime.Now)
                         {
-                            await EmailHelper.CheckForRestart(appHealthConfig);
+                            await EmailHelper.CallAPI(appHealthConfig.ActionEndpoint);
                         }
                     }
                 }

@@ -38,6 +38,8 @@ namespace MyJobAssistent
 
                 if (appHealthStatus.Status?.ToLower() == AppHealthStatus.Healthy.ToLower())
                     appHealthConfig.BackColor = Color.Green;
+                else
+                    appHealthConfig.BackColor = Color.Red;
 
                 appHealthConfigs.Add(appHealthConfig);
             }
