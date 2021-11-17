@@ -98,5 +98,24 @@ namespace MyJobAssistent
             panel.Controls.Add(lblApiStatus);
             return panel;
         }
+
+        private async void JobAssistent_LoadAsync(object sender, EventArgs e)
+        {
+            Timer timer = new Timer();
+            timer.Interval = (60 * 1000); // sleep for 1 minute
+            timer.Tick += Timer_Tick;
+            timer.Start();
+        }
+
+        private async void Timer_Tick(object sender, EventArgs e)
+        {
+            foreach (var appHealthConfig in _apiService._appHealthConfigs)
+            {
+                if (appHealthConfig.IsTriggeredByEmail)
+                {
+                    await EmailHelper.CheckForRestart(appHealthConfig);
+                }
+            }
+        }
     }
 }
