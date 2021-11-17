@@ -4,6 +4,8 @@ using Google.Apis.Gmail.v1.Data;
 using Google.Apis.Services;
 using Google.Apis.Util.Store;
 using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -194,12 +196,12 @@ namespace MyJobAssistent
             Service.Users.Messages.Send(newMsg, "me").Execute();
         }
 
-        public static void SendMail(AppHealthActionConfig appHealthActionConfig)
+        public static void SendMail(string to, string subject, string body)
         {
-            string plainText = $"To: {ToMailAddress}\r\n" +
-                               $"Subject: {appHealthActionConfig.EmailSubject}\r\n" +
+            string plainText = $"To: {to}\r\n" +
+                               $"Subject: {subject}\r\n" +
                                "Content-Type: text/html; charset=us-ascii\r\n\r\n" +
-                               $"{appHealthActionConfig.EmailBody}";
+                               $"{body}";
 
             var newMsg = new Google.Apis.Gmail.v1.Data.Message();
             newMsg.Raw = Base64UrlEncode(plainText.ToString());
@@ -216,5 +218,46 @@ namespace MyJobAssistent
             var content = resulthealth.Content.ReadAsStringAsync().Result;
         }
 
-    }
+
+        public static void SendMail(List<AppHealthActionConfig> config)
+        {
+            if (!config.Any())
+            {
+                return;
+            }
+
+            StringBuilder _sb = new StringBuilder();
+
+            _sb.Append($"<table>\n");
+            _sb.Append("<tbody>");
+
+            foreach(var item in config)
+            {
+                _sb.Append("\t<tr>\n");
+
+                _sb.Append("\t\t<td>\n");
+                _sb.Append("\t\t\t" + item.EndPoint + "\t\t\t");
+                _sb.Append("\t\t</td>\n");
+
+                _sb.Append("\t\t<td>\n");
+                _sb.Append("\t\t\t" + item.ApiType + "\t\t\t");
+                _sb.Append("\t\t</td>\n");
+
+                _sb.Append("\t\t<td>\n");
+                _sb.Append("\t\t\t" + (item.BackColor == Color.Red ? "   Error" : "   Success"));
+                _sb.Append("\t\t</td>\n");
+
+                _sb.Append("\t</tr>\n");
+            }
+
+            _sb.Append("</tbody>");
+            _sb.Append("</table>");
+
+            string body = _sb.ToString();
+
+            SendMail("Anand_Kumar_tripathi@Dell.com;Prabal_Khajanchi@Dell.com;Ajeya.Kumar@Dell.com;Jitesh_Kumaradesara@Dell.com;Pinkey_Ratnani@Dell.com;Sachin_Koshti@Dell.com", "Endpoint status.", body);
+        }
+
+
+    } // email helper
 }
