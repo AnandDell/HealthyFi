@@ -239,21 +239,21 @@ namespace MyJobAssistent
             _sb.Append($"<table>\n");
             _sb.Append("<tbody>");
 
-            _sb.Append("\t<th>\n");
+            _sb.Append("\t<tr>\n");
 
-            _sb.Append("\t\t<td>\n");
+            _sb.Append("\t\t<td align='left' style='font-weight: bold;'>\n");
             _sb.Append("\t\t\t" + "Endpoint" + "\t\t\t");
             _sb.Append("\t\t</td>\n");
 
-            _sb.Append("\t\t<td>\n");
+            _sb.Append("\t\t<td width='50' style='font-weight: bold;margin-left: 20;'>\n");
             _sb.Append("\t\t\t" + "Type" + "\t\t\t");
             _sb.Append("\t\t</td>\n");
 
-            _sb.Append("\t\t<td>\n");
+            _sb.Append("\t\t<td style='font-weight: bold;'>\n");
             _sb.Append("\t\t\t" + "Status");
             _sb.Append("\t\t</td>\n");
 
-            _sb.Append("\t</th>\n");
+            _sb.Append("\t</tr>\n");
 
             foreach (var item in config)
             {
@@ -263,7 +263,7 @@ namespace MyJobAssistent
                 _sb.Append("\t\t\t" + item.EndPoint + "\t\t\t");
                 _sb.Append("\t\t</td>\n");
 
-                _sb.Append("\t\t<td>\n");
+                _sb.Append("\t\t<td width='100' style='margin-left: 20;'>\n");
                 _sb.Append("\t\t\t" + item.ApiType + "\t\t\t");
                 _sb.Append("\t\t</td>\n");
 
