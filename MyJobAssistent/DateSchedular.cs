@@ -12,33 +12,28 @@ namespace MyJobAssistent
 {
     public partial class DateSchedular : Form
     {
-        AppHealthActionConfig _appHealthAction;
+        public AppHealthActionConfig AppHealthAction { get; private set; }
         public DateSchedular()
         {
             InitializeComponent();
         }
 
-        public DateSchedular(bool reccurance)
-        {
-            InitializeComponent();
-            checkBox1.Enabled = reccurance;
-            checkBox2.Enabled = reccurance;
-            checkBox3.Enabled = reccurance;
-
-            this.Text = reccurance ? "Recurrance Schedular" : "Date Time Scheduler";
-        }
-
         public DateSchedular(AppHealthActionConfig appHealthAction)
         {
             InitializeComponent();
-            _appHealthAction = appHealthAction;
-            checkBox1.Enabled = appHealthAction.Daily;
-            checkBox2.Enabled = appHealthAction.Weekly;
-            checkBox3.Enabled = appHealthAction.Monthly;
+            AppHealthAction = appHealthAction;
+            dateTimePicker1.Value = AppHealthAction.TimeToExecute;
+            checkBox1.Enabled = AppHealthAction.Daily;
+            checkBox2.Enabled = AppHealthAction.Weekly;
+            checkBox3.Enabled = AppHealthAction.Monthly;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            AppHealthAction.TimeToExecute = dateTimePicker1.Value;
+            AppHealthAction.Daily = checkBox1.Enabled;
+            AppHealthAction.Weekly = checkBox2.Enabled;
+            AppHealthAction.Monthly = checkBox3.Enabled;
             MessageBox.Show("Job Scheduled");
             this.Close();
         }

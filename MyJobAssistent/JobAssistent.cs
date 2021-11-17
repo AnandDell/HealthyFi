@@ -45,7 +45,7 @@ namespace MyJobAssistent
         private async Task FormRefresh()
         {
             var yLoc = 20;
-            List<AppHealthConfig> appHealthConfigs = await _apiService.GetHealthStatus();
+            List<AppHealthActionConfig> appHealthConfigs = await _apiService.GetHealthStatusList();
 
             verticalLayoutPanel.Controls.Clear();
             verticalLayoutPanel.SuspendLayout();
