@@ -26,27 +26,41 @@ namespace MyJobAssistent
         {
             verticalLayoutPanel.Controls.Add(GetHorizontalPanel(new AppHealthConfig { }, YLocation = YLocation + 50));
         }
-        private void BtnActionRow_Click(object sender, EventArgs e)
+        private async void BtnActionRow_Click(object sender, EventArgs e)
         {
-            AppHealthActionConfig appHealthActionConfig = null;
-            foreach (var horizontalLayoutControl in verticalLayoutPanel.Controls.OfType<FlowLayoutPanel>().ToList())
+            var currentEndPoint = ((sender as Control).Parent as FlowLayoutPanel).Controls.OfType<TextBox>().FirstOrDefault(x => x.Tag.ToString() == "EndPoint").Text;
+            AppHealthActionConfig appHealthActionConfig = await _apiService.GetAppHealthActionConfig(currentEndPoint);
+
+            if (appHealthActionConfig == null)
             {
-                if (horizontalLayoutControl.Controls.Count == 4)
+                foreach (var horizontalLayoutControl in verticalLayoutPanel.Controls.OfType<FlowLayoutPanel>().ToList())
                 {
-                    appHealthActionConfig = GetAppHealthConfig(horizontalLayoutControl);
+                    if (horizontalLayoutControl.Controls.Count == 4)
+                    {
+                        appHealthActionConfig = GetAppHealthConfig(horizontalLayoutControl);
+                        if (currentEndPoint == appHealthActionConfig.EndPoint)
+                            break;
+                        else
+                            appHealthActionConfig = null;
+                    }
                 }
             }
+
             if (appHealthActionConfig != null)
             {
-                JobSchedular jobSchedular = new JobSchedular(appHealthActionConfig);
-                jobSchedular.ShowDialog();
+                using (JobSchedular jobSchedular = new JobSchedular(appHealthActionConfig))
+                {
+                    jobSchedular.ShowDialog();
+                    appHealthActionConfig = jobSchedular.AppHealthAction;
+                }
+                await _apiService.UpdateHealthConfig(appHealthActionConfig);
             }
         }
 
         private async void HealthConfig_Load(object sender, EventArgs e)
         {
             YLocation = 20;
-            List<AppHealthConfig> appHealthConfigs = await _apiService.GetHealthStatus();
+            List<AppHealthActionConfig> appHealthConfigs = await _apiService.GetHealthStatusList();
 
             verticalLayoutPanel.Controls.Clear();
             verticalLayoutPanel.SuspendLayout();
@@ -71,6 +85,7 @@ namespace MyJobAssistent
             panel.Tag = appHealthConfig;
 
             TextBox txtEndPoint = new TextBox { Text = appHealthConfig.EndPoint, Size = new Size { Width = 370, Height = 24 }, Location = new Point(157, yLoc), Tag = "EndPoint" };
+            //txtEndPoint.TextChanged += TxtEndPoint_TextChanged;
             panel.Controls.Add(txtEndPoint);
 
             ComboBox cmbApiType = new ComboBox { Size = new Size { Width = 100, Height = 24 }, Location = new Point(677, yLoc), Tag = "ApiType" };
@@ -78,17 +93,23 @@ namespace MyJobAssistent
             cmbApiType.Text = appHealthConfig.ApiType;
             panel.Controls.Add(cmbApiType);
 
-            Button btnApiAction = new Button { Text = "Action", Location = new Point(797, yLoc), Margin = new Padding { Left = 10 }, Tag = "Action" };
+            Button btnApiAction = new Button { Text = "Action", Location = new Point(797, yLoc), Margin = new Padding { Left = 10 } };
+            btnApiAction.Tag = appHealthConfig;
             btnApiAction.Click += BtnActionRow_Click;
             panel.Controls.Add(btnApiAction);
 
-            Button btnAddRow = new Button { Text = "+", Size = new Size { Width = 22, Height = 25 }, Location = new Point(847, yLoc), Margin = new Padding { Left = 10 } };
-            //btnAddRow.Tag = new AppHealthActionConfig { ActionEndpoint= appHealthConfig.EndPoint, ActionEndpointType = appHealthConfig.ApiType };
+            Button btnAddRow = new Button { Text = "+", Size = new Size { Width = 22, Height = 25 }, Location = new Point(847, yLoc), Margin = new Padding { Left = 10 } };           
             btnAddRow.Click += BtnAddEndPoint_Click;
             panel.Controls.Add(btnAddRow);
 
             return panel;
         }
+
+        //private void TxtEndPoint_TextChanged(object sender, EventArgs e)
+        //{
+        //    ((sender as Control).Parent as FlowLayoutPanel).Controls.OfType<Button>().FirstOrDefault(x=>x.Text== "Action").Tag = (sender as Control).Text;
+        //}
+
         private FlowLayoutPanel GetHeaderPanel(int yLocation)
         {
             FlowLayoutPanel panel = new FlowLayoutPanel();
@@ -123,11 +144,18 @@ namespace MyJobAssistent
         private async void btnSaveConfig_Click(object sender, EventArgs e)
         {
             List<AppHealthActionConfig> appHealthConfigs = new List<AppHealthActionConfig>();
+            var configs = await _apiService.GetAppHealthActionConfigList();
             foreach (var horizontalLayoutControl in verticalLayoutPanel.Controls.OfType<FlowLayoutPanel>().ToList())
             {
                 if (horizontalLayoutControl.Controls.Count == 4)
                 {
                     AppHealthActionConfig appHealthActionConfig = GetAppHealthConfig(horizontalLayoutControl);
+                    var config = configs.FirstOrDefault(x => x.EndPoint == appHealthActionConfig.EndPoint);
+                    if(config!=null)
+                    {
+                        appHealthActionConfig.ActionEndpoint = config.ActionEndpoint;
+                        appHealthActionConfig.ActionEndpointType = config.ActionEndpointType;
+                    }
                     appHealthConfigs.Add(appHealthActionConfig);
                 }
             }

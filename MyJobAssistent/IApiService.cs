@@ -5,6 +5,6 @@ namespace MyJobAssistent
 {
     public interface IApiService
     {
-        Task<List<AppHealthConfig>> GetHealthStatus();
+        Task<List<AppHealthConfig>> GetHealthStatusList();
     }
 }

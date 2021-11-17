@@ -49,7 +49,7 @@ namespace MyJobAssistent
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(50, 168);
+            this.label1.Location = new System.Drawing.Point(30, 168);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(84, 13);
             this.label1.TabIndex = 1;
@@ -64,7 +64,7 @@ namespace MyJobAssistent
             "Web API Job",
             "Health Analysis Job",
             "Monitoring Job"});
-            this.comboBox1.Location = new System.Drawing.Point(168, 162);
+            this.comboBox1.Location = new System.Drawing.Point(148, 162);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 21);
             this.comboBox1.TabIndex = 2;
@@ -73,7 +73,7 @@ namespace MyJobAssistent
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(51, 113);
+            this.label2.Location = new System.Drawing.Point(31, 113);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(87, 13);
             this.label2.TabIndex = 3;
@@ -81,9 +81,9 @@ namespace MyJobAssistent
             // 
             // txtJobEndPoint
             // 
-            this.txtJobEndPoint.Location = new System.Drawing.Point(166, 108);
+            this.txtJobEndPoint.Location = new System.Drawing.Point(146, 108);
             this.txtJobEndPoint.Name = "txtJobEndPoint";
-            this.txtJobEndPoint.Size = new System.Drawing.Size(338, 20);
+            this.txtJobEndPoint.Size = new System.Drawing.Size(397, 20);
             this.txtJobEndPoint.TabIndex = 4;
             this.txtJobEndPoint.Text = "https://utility.liveoptics.com/v2/api/restartservice";
             // 
@@ -92,16 +92,16 @@ namespace MyJobAssistent
             this.groupBox1.Controls.Add(this.btnNotificationInititor);
             this.groupBox1.Controls.Add(this.btnEmailInitiator);
             this.groupBox1.Controls.Add(this.btnSchedule);
-            this.groupBox1.Location = new System.Drawing.Point(53, 222);
+            this.groupBox1.Location = new System.Drawing.Point(34, 222);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(645, 111);
+            this.groupBox1.Size = new System.Drawing.Size(702, 111);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Configure";
             // 
             // btnNotificationInititor
             // 
-            this.btnNotificationInititor.Location = new System.Drawing.Point(471, 41);
+            this.btnNotificationInititor.Location = new System.Drawing.Point(501, 41);
             this.btnNotificationInititor.Name = "btnNotificationInititor";
             this.btnNotificationInititor.Size = new System.Drawing.Size(125, 35);
             this.btnNotificationInititor.TabIndex = 3;
@@ -111,7 +111,7 @@ namespace MyJobAssistent
             // 
             // btnEmailInitiator
             // 
-            this.btnEmailInitiator.Location = new System.Drawing.Point(270, 41);
+            this.btnEmailInitiator.Location = new System.Drawing.Point(300, 41);
             this.btnEmailInitiator.Name = "btnEmailInitiator";
             this.btnEmailInitiator.Size = new System.Drawing.Size(125, 35);
             this.btnEmailInitiator.TabIndex = 2;
@@ -121,7 +121,7 @@ namespace MyJobAssistent
             // 
             // btnSchedule
             // 
-            this.btnSchedule.Location = new System.Drawing.Point(54, 41);
+            this.btnSchedule.Location = new System.Drawing.Point(84, 41);
             this.btnSchedule.Name = "btnSchedule";
             this.btnSchedule.Size = new System.Drawing.Size(125, 35);
             this.btnSchedule.TabIndex = 0;
@@ -131,7 +131,7 @@ namespace MyJobAssistent
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(107, 377);
+            this.btnSave.Location = new System.Drawing.Point(119, 377);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(125, 39);
             this.btnSave.TabIndex = 6;
@@ -141,7 +141,7 @@ namespace MyJobAssistent
             // 
             // btnExecute
             // 
-            this.btnExecute.Location = new System.Drawing.Point(323, 377);
+            this.btnExecute.Location = new System.Drawing.Point(335, 377);
             this.btnExecute.Name = "btnExecute";
             this.btnExecute.Size = new System.Drawing.Size(125, 36);
             this.btnExecute.TabIndex = 7;
@@ -156,7 +156,7 @@ namespace MyJobAssistent
             "Web API",
             "Winodws Process",
             "Remote Process"});
-            this.cmbBoxJobType.Location = new System.Drawing.Point(555, 107);
+            this.cmbBoxJobType.Location = new System.Drawing.Point(595, 107);
             this.cmbBoxJobType.Name = "cmbBoxJobType";
             this.cmbBoxJobType.Size = new System.Drawing.Size(141, 21);
             this.cmbBoxJobType.TabIndex = 8;
@@ -165,7 +165,7 @@ namespace MyJobAssistent
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(519, 110);
+            this.label3.Location = new System.Drawing.Point(559, 110);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(16, 13);
             this.label3.TabIndex = 9;
@@ -173,16 +173,16 @@ namespace MyJobAssistent
             // 
             // txtEndPoint
             // 
-            this.txtEndPoint.Location = new System.Drawing.Point(166, 52);
+            this.txtEndPoint.Location = new System.Drawing.Point(146, 52);
             this.txtEndPoint.Name = "txtEndPoint";
-            this.txtEndPoint.Size = new System.Drawing.Size(338, 20);
+            this.txtEndPoint.Size = new System.Drawing.Size(397, 20);
             this.txtEndPoint.TabIndex = 12;
             this.txtEndPoint.Text = "https://utility.liveoptics.com/v2/api/";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(51, 57);
+            this.label4.Location = new System.Drawing.Point(31, 57);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(102, 13);
             this.label4.TabIndex = 11;
