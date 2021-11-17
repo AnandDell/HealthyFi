@@ -15,8 +15,7 @@ namespace MyJobAssistent
     {
         List<AppHealthActionConfig> _appHealthConfigs = new List<AppHealthActionConfig>
             {
-                new AppHealthActionConfig{ EndpointName= "FirstApi", EndPoint = "https://papi.liveoptics-dev.com/v2/api/health", ApiType="Web API" },
-                new AppHealthActionConfig{ EndpointName= "SecondApi", EndPoint = "http://dellrestapi-env.eba-enmpcutb.us-east-2.elasticbeanstalk.com/health", ApiType="Web API" }
+                new AppHealthActionConfig{ EndpointName= "FirstApi", EndPoint = "http://dellrestapi-env.eba-enmpcutb.us-east-2.elasticbeanstalk.com/health", ApiType="Web API" }
             };
         public ApiService()
         {
@@ -81,6 +80,7 @@ namespace MyJobAssistent
             if (appHealthConfigObj == null)
             {
                 _appHealthConfigs.Add(appHealthConfig);
+                File.WriteAllText("AppHealthActionConfig.json", JsonConvert.SerializeObject(_appHealthConfigs));
                 return _appHealthConfigs;
             }
 
@@ -92,6 +92,7 @@ namespace MyJobAssistent
                     _appHealthConfigs[counter] = appHealthConfig;
                 }
             }
+            File.WriteAllText("AppHealthActionConfig.json", JsonConvert.SerializeObject(_appHealthConfigs));
             return _appHealthConfigs;
         }
     }
