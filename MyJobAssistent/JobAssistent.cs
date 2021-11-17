@@ -114,7 +114,11 @@ namespace MyJobAssistent
             {
                 //if (appHealthConfig.IsTriggeredByEmail)
                 {
-                    await EmailHelper.CheckForRestart(appHealthConfig);
+                    try
+                    {
+                        await EmailHelper.CheckForRestart(appHealthConfig);
+                    }
+                    catch { }
                 }
             }
         }
