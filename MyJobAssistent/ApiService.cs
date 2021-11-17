@@ -20,18 +20,11 @@ namespace MyJobAssistent
             };
         public ApiService()
         {
-            //deserialize
             try
             {
-                string dir = @"c:\temp";
-                string serializationFile = Path.Combine(dir, "AppHealthActionConfig.bin");
-                using (Stream stream = File.Open(serializationFile, FileMode.Open))
-                {
-                    var bformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-
-                    List<AppHealthActionConfig> appHealthActionConfigs = (List<AppHealthActionConfig>)bformatter.Deserialize(stream);
-                    _appHealthConfigs = appHealthActionConfigs;
-                }
+                string json = File.ReadAllText("AppHealthActionConfig.json");
+                var appHealthActionConfigs = JsonConvert.DeserializeObject<List<AppHealthActionConfig>>(json);
+                _appHealthConfigs = appHealthActionConfigs;
             }
             catch { }
         }        
@@ -78,16 +71,7 @@ namespace MyJobAssistent
         public async Task<List<AppHealthActionConfig>> SaveHealthConfigs(List<AppHealthActionConfig> appHealthConfigs)
         {
             _appHealthConfigs = appHealthConfigs;
-            string dir = @"c:\temp";
-            string serializationFile = Path.Combine(dir, "AppHealthActionConfig.bin");
-
-            //serialize
-            using (Stream stream = File.Open(serializationFile, FileMode.Create))
-            {
-                var bformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-
-                bformatter.Serialize(stream, appHealthConfigs);
-            }
+            File.WriteAllText("AppHealthActionConfig.json", JsonConvert.SerializeObject(appHealthConfigs));
             return appHealthConfigs;
         }
 
