@@ -128,7 +128,10 @@ namespace MyJobAssistent
                                             byte[] data = FromBase64ForUrlString(p.Body.Data);
                                             body = Encoding.UTF8.GetString(data);
 
-                                            await CheckForTrigger(from, subject, body);
+                                            if (await CheckForTrigger(from, subject, body))
+                                            {
+                                                await CallAPI(appHealthActionConfig.ActionEndpoint);
+                                            }
                                             breakLoop = true;
                                             break;
                                         }
@@ -139,7 +142,10 @@ namespace MyJobAssistent
                                     byte[] data = FromBase64ForUrlString(emailInfoResponse.Payload.Body.Data);
                                     body = Encoding.UTF8.GetString(data);
 
-                                    await CheckForTrigger(from, subject, body);
+                                    if (await CheckForTrigger(from, subject, body))
+                                    {
+                                        await CallAPI(appHealthActionConfig.ActionEndpoint);
+                                    }
                                     breakLoop = true;
                                     break;
                                 }
@@ -171,7 +177,7 @@ namespace MyJobAssistent
             return Convert.FromBase64String(result.ToString());
         }
 
-        public static async Task CheckForTrigger(string from, string subject, string body)
+        public static async Task<bool> CheckForTrigger(string from, string subject, string body)
         {
             if (FromAddresses.Any(fromAdd => from.ToLower().Contains(fromAdd.ToLower()))
                 && Subjects.Any(sub => subject.ToLower().Contains(sub.ToLower()))
@@ -180,8 +186,10 @@ namespace MyJobAssistent
                 //
                 // Can API to set reset
                 //
-                await CallAPI(UrlSetHealty);
+                return true;
             }
+
+            return false;
         }
 
         public static void SendMail()
@@ -231,7 +239,23 @@ namespace MyJobAssistent
             _sb.Append($"<table>\n");
             _sb.Append("<tbody>");
 
-            foreach(var item in config)
+            _sb.Append("\t<th>\n");
+
+            _sb.Append("\t\t<td>\n");
+            _sb.Append("\t\t\t" + "Endpoint" + "\t\t\t");
+            _sb.Append("\t\t</td>\n");
+
+            _sb.Append("\t\t<td>\n");
+            _sb.Append("\t\t\t" + "Type" + "\t\t\t");
+            _sb.Append("\t\t</td>\n");
+
+            _sb.Append("\t\t<td>\n");
+            _sb.Append("\t\t\t" + "Status");
+            _sb.Append("\t\t</td>\n");
+
+            _sb.Append("\t</th>\n");
+
+            foreach (var item in config)
             {
                 _sb.Append("\t<tr>\n");
 

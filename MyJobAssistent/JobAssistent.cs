@@ -112,13 +112,23 @@ namespace MyJobAssistent
             var configs = await _apiService.GetAppHealthActionConfigList();
             foreach (var appHealthConfig in configs)
             {
-                //if (appHealthConfig.IsTriggeredByEmail)
+                try
                 {
-                    try
+                    if (appHealthConfig.IsTriggeredByEmail)
                     {
                         await EmailHelper.CheckForRestart(appHealthConfig);
                     }
-                    catch { }
+                    else if (appHealthConfig.IsTriggeredByDateTime)
+                    {
+                        if (appHealthConfig.TimeToExecute.ToString("MM/dd/yyyy hh:mm") == DateTime.Now.ToString("MM/dd/yyyy hh:mm"))
+                        {
+                            await EmailHelper.CheckForRestart(appHealthConfig);
+                        }
+                    }
+                }
+                catch
+                {
+
                 }
             }
         }
