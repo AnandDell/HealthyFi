@@ -1,13 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace MyJobAssistent
 {
-    public class AppHealthActionConfig : AppHealthConfig
+    [Serializable]
+    public class AppHealthActionConfig 
     {
+        public AppHealthActionConfig()
+        {
+            BackColor = Color.Red;
+        }
+        public string EndpointName { get; set; }
+        public string EndPoint { get; set; }
+        public string ApiType { get; set; }
+        public Color BackColor { get; set; }
+
         public string ActionEndpoint { get; set; }
 
         public string ActionEndpointType { get; set; }

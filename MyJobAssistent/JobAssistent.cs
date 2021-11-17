@@ -79,7 +79,7 @@ namespace MyJobAssistent
             return panel;
         }
 
-        private FlowLayoutPanel GetHorizontalPanel(AppHealthConfig appHealthConfig, int yLoc)
+        private FlowLayoutPanel GetHorizontalPanel(AppHealthActionConfig appHealthConfig, int yLoc)
         {
             FlowLayoutPanel panel = new FlowLayoutPanel();
             panel.Name = appHealthConfig.EndpointName;

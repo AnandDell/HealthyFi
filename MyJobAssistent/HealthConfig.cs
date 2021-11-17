@@ -24,7 +24,7 @@ namespace MyJobAssistent
 
         private void BtnAddEndPoint_Click(object sender, EventArgs e)
         {
-            verticalLayoutPanel.Controls.Add(GetHorizontalPanel(new AppHealthConfig { }, YLocation = YLocation + 50));
+            verticalLayoutPanel.Controls.Add(GetHorizontalPanel(new AppHealthActionConfig { }, YLocation = YLocation + 50));
         }
         private async void BtnActionRow_Click(object sender, EventArgs e)
         {
@@ -74,7 +74,7 @@ namespace MyJobAssistent
             this.Controls.Add(verticalLayoutPanel);
         }
 
-        private FlowLayoutPanel GetHorizontalPanel(AppHealthConfig appHealthConfig, int yLoc)
+        private FlowLayoutPanel GetHorizontalPanel(AppHealthActionConfig appHealthConfig, int yLoc)
         {
             FlowLayoutPanel panel = new FlowLayoutPanel();
             panel.Name = appHealthConfig.EndpointName;
