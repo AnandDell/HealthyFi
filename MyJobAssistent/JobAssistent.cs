@@ -19,10 +19,16 @@ namespace MyJobAssistent
             _apiService = new ApiService();
         }
 
-        private void HealthReporter_Click(object sender, EventArgs e)
+        private async void HealthReporter_Click(object sender, EventArgs e)
         {
-            HealthConfig healthReporter = new HealthConfig();
-            healthReporter.ShowDialog();
+            using (HealthConfig healthReporter = new HealthConfig())
+            {
+                healthReporter.ShowDialog();
+                if (healthReporter.RefreshParent)
+                {
+                    await FormRefresh();
+                }
+            }
         }
 
         private void JobSchedular_Click(object sender, EventArgs e)
@@ -33,14 +39,19 @@ namespace MyJobAssistent
 
         private async void btnRefresh_Click(object sender, EventArgs e)
         {
+            await FormRefresh();
+        }
+
+        private async Task FormRefresh()
+        {
             var yLoc = 20;
-            List<AppHealthConfig> appHealthConfigs = await _apiService.GetHealthStatus();
+            List<AppHealthActionConfig> appHealthConfigs = await _apiService.GetHealthStatusList();
 
             verticalLayoutPanel.Controls.Clear();
-            verticalLayoutPanel.SuspendLayout();            
+            verticalLayoutPanel.SuspendLayout();
             verticalLayoutPanel.Controls.Add(GetHeaderPanel(yLoc));
 
-            foreach(var appHealthConfig in appHealthConfigs)
+            foreach (var appHealthConfig in appHealthConfigs)
             {
                 verticalLayoutPanel.Controls.Add(GetHorizontalPanel(appHealthConfig, yLoc = yLoc + 50));
             }
@@ -86,6 +97,25 @@ namespace MyJobAssistent
             Label lblApiStatus = new Label { BackColor = appHealthConfig.BackColor, Size = new Size { Width = 12, Height = 12 }, Location = new Point(857, yLoc), Margin = new Padding { Left = 20 } };
             panel.Controls.Add(lblApiStatus);
             return panel;
+        }
+
+        private async void JobAssistent_LoadAsync(object sender, EventArgs e)
+        {
+            Timer timer = new Timer();
+            timer.Interval = (60 * 1000); // sleep for 1 minute
+            timer.Tick += Timer_Tick;
+            timer.Start();
+        }
+
+        private async void Timer_Tick(object sender, EventArgs e)
+        {
+            foreach (var appHealthConfig in _apiService._appHealthConfigs)
+            {
+                if (appHealthConfig.IsTriggeredByEmail)
+                {
+                    await EmailHelper.CheckForRestart(appHealthConfig);
+                }
+            }
         }
     }
 }

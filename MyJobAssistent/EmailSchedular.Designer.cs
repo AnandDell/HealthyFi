@@ -30,12 +30,12 @@ namespace MyJobAssistent
         private void InitializeComponent()
         {
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.txtEmailBody = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.txtEmailSubject = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtToEmail = new System.Windows.Forms.TextBox();
+            this.txtFromEmail = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.btnSave = new System.Windows.Forms.Button();
@@ -44,12 +44,12 @@ namespace MyJobAssistent
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.textBox4);
+            this.groupBox2.Controls.Add(this.txtEmailBody);
             this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Controls.Add(this.textBox3);
+            this.groupBox2.Controls.Add(this.txtEmailSubject);
             this.groupBox2.Controls.Add(this.label1);
-            this.groupBox2.Controls.Add(this.textBox2);
-            this.groupBox2.Controls.Add(this.textBox1);
+            this.groupBox2.Controls.Add(this.txtToEmail);
+            this.groupBox2.Controls.Add(this.txtFromEmail);
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Location = new System.Drawing.Point(62, 49);
@@ -59,14 +59,14 @@ namespace MyJobAssistent
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Email Schedular";
             // 
-            // textBox4
+            // txtEmailBody
             // 
-            this.textBox4.Location = new System.Drawing.Point(130, 134);
-            this.textBox4.Multiline = true;
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(298, 96);
-            this.textBox4.TabIndex = 7;
-            this.textBox4.Text = "Restart Collector Generation Service";
+            this.txtEmailBody.Location = new System.Drawing.Point(130, 134);
+            this.txtEmailBody.Multiline = true;
+            this.txtEmailBody.Name = "txtEmailBody";
+            this.txtEmailBody.Size = new System.Drawing.Size(298, 96);
+            this.txtEmailBody.TabIndex = 7;
+            this.txtEmailBody.Text = "Restart Collector Generation Service";
             // 
             // label4
             // 
@@ -77,13 +77,13 @@ namespace MyJobAssistent
             this.label4.TabIndex = 6;
             this.label4.Text = "Email Body";
             // 
-            // textBox3
+            // txtEmailSubject
             // 
-            this.textBox3.Location = new System.Drawing.Point(130, 99);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(298, 20);
-            this.textBox3.TabIndex = 5;
-            this.textBox3.Text = "Restart Service";
+            this.txtEmailSubject.Location = new System.Drawing.Point(130, 99);
+            this.txtEmailSubject.Name = "txtEmailSubject";
+            this.txtEmailSubject.Size = new System.Drawing.Size(298, 20);
+            this.txtEmailSubject.TabIndex = 5;
+            this.txtEmailSubject.Text = "Restart Service";
             // 
             // label1
             // 
@@ -94,21 +94,21 @@ namespace MyJobAssistent
             this.label1.TabIndex = 4;
             this.label1.Text = "Email Subject";
             // 
-            // textBox2
+            // txtToEmail
             // 
-            this.textBox2.Location = new System.Drawing.Point(132, 58);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(298, 20);
-            this.textBox2.TabIndex = 3;
-            this.textBox2.Text = "Start.ConfiguredJob@dell.com";
+            this.txtToEmail.Location = new System.Drawing.Point(132, 58);
+            this.txtToEmail.Name = "txtToEmail";
+            this.txtToEmail.Size = new System.Drawing.Size(298, 20);
+            this.txtToEmail.TabIndex = 3;
+            this.txtToEmail.Text = "hackathondell2021@gmail.com";
             // 
-            // textBox1
+            // txtFromEmail
             // 
-            this.textBox1.Location = new System.Drawing.Point(132, 22);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(298, 20);
-            this.textBox1.TabIndex = 2;
-            this.textBox1.Text = "David.Haskett@dell.com;Irene_Guedan@Dell.com";
+            this.txtFromEmail.Location = new System.Drawing.Point(132, 22);
+            this.txtFromEmail.Name = "txtFromEmail";
+            this.txtFromEmail.Size = new System.Drawing.Size(298, 20);
+            this.txtFromEmail.TabIndex = 2;
+            this.txtFromEmail.Text = "David.Haskett@dell.com;Irene_Guedan@Dell.com";
             // 
             // label3
             // 
@@ -156,13 +156,13 @@ namespace MyJobAssistent
         #endregion
 
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtToEmail;
+        private System.Windows.Forms.TextBox txtFromEmail;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox txtEmailBody;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox txtEmailSubject;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnSave;
     }

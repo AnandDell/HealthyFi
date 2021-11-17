@@ -10,27 +10,26 @@ using System.Threading.Tasks;
 
 namespace MyJobAssistent
 {
-    public class ApiService : IApiService
+    public class ApiService
     {
-        List<AppHealthConfig> _appHealthConfigs;
+        static List<AppHealthActionConfig> _appHealthConfigs = new List<AppHealthActionConfig>
+            {
+                new AppHealthActionConfig{ EndpointName= "FirstApi", EndPoint = "https://papi.liveoptics-dev.com/v2/api/health", ApiType="Web API" },
+                //new AppHealthActionConfig{ EndpointName= "SecondApi", EndPoint = "http://dellrestapi-env.eba-enmpcutb.us-east-2.elasticbeanstalk.com/health", ApiType="Web API" }
+            };
         public ApiService()
         {
-            _appHealthConfigs = new List<AppHealthConfig>
-            {
-                new AppHealthConfig{ EndpointName= "FirstPanel", EndPoint = "https://papi.liveoptics-dev.com/v2/api/health", ApiType="Web API", BackColor = Color.Red },
-                new AppHealthConfig{ EndpointName= "SecondPanel", EndPoint = "https://restartservice.free.beeceptor.com/", ApiType="Web API", BackColor = Color.Red }
-            };
-        }
+        }        
 
-        public async Task<List<AppHealthConfig>> GetHealthStatus()
+        public async Task<List<AppHealthActionConfig>> GetHealthStatusList()
         {
-            List<AppHealthConfig> appHealthConfigs = new List<AppHealthConfig>();
+            List<AppHealthActionConfig> appHealthConfigs = new List<AppHealthActionConfig>();
 
-            foreach (AppHealthConfig appHealthConfig in _appHealthConfigs)
+            foreach (AppHealthActionConfig appHealthConfig in _appHealthConfigs)
             {
                 AppHealthStatus appHealthStatus = await GetApiHealth(appHealthConfig);
 
-                if (appHealthStatus.Status == "Healthy")
+                if (appHealthStatus.Status == AppHealthStatus.Healthy)
                     appHealthConfig.BackColor = Color.Green;
 
                 appHealthConfigs.Add(appHealthConfig);
@@ -39,7 +38,17 @@ namespace MyJobAssistent
             return appHealthConfigs;
         }
 
-        private async Task<AppHealthStatus> GetApiHealth(AppHealthConfig appHealthConfig)
+        public async Task<AppHealthActionConfig> GetAppHealthActionConfig( string endPoint)
+        {
+            return _appHealthConfigs.FirstOrDefault(x=>x.EndPoint==endPoint);
+        }
+
+        public async Task<List<AppHealthActionConfig>> GetAppHealthActionConfigList()
+        {
+            return _appHealthConfigs;
+        }
+
+        public async Task<AppHealthStatus> GetApiHealth(AppHealthConfig appHealthConfig)
         {
             using (var httpClient = new HttpClient())
             {
@@ -49,6 +58,32 @@ namespace MyJobAssistent
                 var appHealthStatus = JsonConvert.DeserializeObject<AppHealthStatus>(content);
                 return appHealthStatus;
             }
+        }
+
+        public async Task<List<AppHealthActionConfig>> SaveHealthConfigs(List<AppHealthActionConfig> appHealthConfigs)
+        {
+            _appHealthConfigs = appHealthConfigs;
+            return appHealthConfigs;
+        }
+
+        public async Task<List<AppHealthActionConfig>> UpdateHealthConfig(AppHealthActionConfig appHealthConfig)
+        {
+            var appHealthConfigObj = _appHealthConfigs.FirstOrDefault(x=>x.EndPoint== appHealthConfig.EndPoint);
+            if (appHealthConfigObj == null)
+            {
+                _appHealthConfigs.Add(appHealthConfig);
+                return _appHealthConfigs;
+            }
+
+            for(int counter=0; counter<_appHealthConfigs.Count; counter++)
+            {
+                var appConfig = _appHealthConfigs[counter];
+                if (appConfig.EndPoint== appHealthConfig.EndPoint)
+                {
+                    _appHealthConfigs[counter] = appHealthConfig;
+                }
+            }
+            return _appHealthConfigs;
         }
     }
 }
