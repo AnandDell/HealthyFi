@@ -109,7 +109,8 @@ namespace MyJobAssistent
 
         private async void Timer_Tick(object sender, EventArgs e)
         {
-            foreach (var appHealthConfig in _apiService._appHealthConfigs)
+            var configs = await _apiService.GetAppHealthActionConfigList();
+            foreach (var appHealthConfig in configs)
             {
                 if (appHealthConfig.IsTriggeredByEmail)
                 {
