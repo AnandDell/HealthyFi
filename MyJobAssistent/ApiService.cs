@@ -12,7 +12,7 @@ namespace MyJobAssistent
 {
     public class ApiService : IApiService
     {
-        List<AppHealthActionConfig> _appHealthConfigs;
+        public List<AppHealthActionConfig> _appHealthConfigs;
         public ApiService()
         {
             _appHealthConfigs = new List<AppHealthActionConfig>

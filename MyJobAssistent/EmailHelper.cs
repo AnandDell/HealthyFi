@@ -68,17 +68,15 @@ namespace MyJobAssistent
         static string UrlSetUnhealth = "http://dellrestapi-env.eba-enmpcutb.us-east-2.elasticbeanstalk.com/health/error%20heart%202";
         static string UrlSetHealty = "http://dellrestapi-env.eba-enmpcutb.us-east-2.elasticbeanstalk.com/health/healthy";
 
-        public static async Task CheckForRestart()
+        public static async Task CheckForRestart(AppHealthActionConfig appHealthActionConfig)
         {
             //
             // Fetch all the mails from inbox
             //
-
             var inboxlistRequest = Service.Users.Messages.List("hackathondell2021@gmail.com");
             inboxlistRequest.Q = "is:unread";
             inboxlistRequest.LabelIds = "INBOX";
             inboxlistRequest.IncludeSpamTrash = false;
-            // get emails   
             var emailListResponse = inboxlistRequest.Execute();
             if (emailListResponse != null && emailListResponse.Messages != null)
             {
@@ -99,9 +97,9 @@ namespace MyJobAssistent
                         var modifyRequest = new ModifyMessageRequest() { RemoveLabelIds = new[] { "UNREAD" }, ETag = emailInfoResponse.ETag };
                         var modifyResponse = Service.Users.Messages.Modify(modifyRequest, "me", emailInfoResponse.Id).Execute();
 
+                        //loop through the headers to get from, date, subject and body  
                         string from = "", date = "", subject = "", body = "";
                         bool breakLoop = false;
-                        //loop through the headers to get from, date, subject and body  
                         foreach (var mParts in emailInfoResponse.Payload.Headers)
                         {
                             if (mParts.Name == "Date")
@@ -153,11 +151,6 @@ namespace MyJobAssistent
                     }
                 }
             }
-
-            //
-            // Send message
-            //
-            SendMail();
         }
 
         public static string Base64UrlEncode(string input)
@@ -195,6 +188,18 @@ namespace MyJobAssistent
                                $"Subject: {Subjects[0]}\r\n" +
                                "Content-Type: text/html; charset=us-ascii\r\n\r\n" +
                                $"{BodySubstrings[0]}";
+
+            var newMsg = new Google.Apis.Gmail.v1.Data.Message();
+            newMsg.Raw = Base64UrlEncode(plainText.ToString());
+            Service.Users.Messages.Send(newMsg, "me").Execute();
+        }
+
+        public static void SendMail(AppHealthActionConfig appHealthActionConfig)
+        {
+            string plainText = $"To: {ToMailAddress}\r\n" +
+                               $"Subject: {appHealthActionConfig.EmailSubject}\r\n" +
+                               "Content-Type: text/html; charset=us-ascii\r\n\r\n" +
+                               $"{appHealthActionConfig.EmailBody}";
 
             var newMsg = new Google.Apis.Gmail.v1.Data.Message();
             newMsg.Raw = Base64UrlEncode(plainText.ToString());

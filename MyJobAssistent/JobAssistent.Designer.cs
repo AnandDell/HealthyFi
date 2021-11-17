@@ -86,6 +86,7 @@ namespace MyJobAssistent
             this.Controls.Add(this.BtnHealthReporter);
             this.Name = "JobAssistent";
             this.Text = "HealthyFI";
+            this.Load += new System.EventHandler(this.JobAssistent_LoadAsync);
             this.ResumeLayout(false);
 
         }
