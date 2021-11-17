@@ -66,10 +66,6 @@ namespace MyJobAssistent
         static string[] BodySubstrings = { "urgently required to restart service" };
         static GmailService Service;
 
-        static string UrlHealthOfServer = "http://dellrestapi-env.eba-enmpcutb.us-east-2.elasticbeanstalk.com/health";
-        static string UrlSetUnhealth = "http://dellrestapi-env.eba-enmpcutb.us-east-2.elasticbeanstalk.com/health/error%20heart%202";
-        static string UrlSetHealty = "http://dellrestapi-env.eba-enmpcutb.us-east-2.elasticbeanstalk.com/health/healthy";
-
         public static async Task CheckForRestart(AppHealthActionConfig appHealthActionConfig)
         {
             //

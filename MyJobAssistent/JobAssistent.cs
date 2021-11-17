@@ -102,13 +102,21 @@ namespace MyJobAssistent
         private async void JobAssistent_LoadAsync(object sender, EventArgs e)
         {
             Timer timer = new Timer();
-            timer.Interval = (10 * 1000); // sleep for 1 minute
-            //timer.Tick += Timer_Tick;
-            //timer.Start();
+            timer.Interval = (60 * 1000); // sleep for 1 minute
+            timer.Tick += Timer_Tick;
+            timer.Start();
+            //hasStarted = true;
         }
+
+        //bool hasStarted = false;
 
         private async void Timer_Tick(object sender, EventArgs e)
         {
+            //if (!hasStarted)
+            //{
+            //    return;
+            //}
+
             var configs = await _apiService.GetAppHealthActionConfigList();
             foreach (var appHealthConfig in configs)
             {
@@ -120,17 +128,22 @@ namespace MyJobAssistent
                     }
                     else if (appHealthConfig.IsTriggeredByDateTime)
                     {
-                        if (appHealthConfig.TimeToExecute <= DateTime.Now)
+                        if (appHealthConfig.TimeToExecute.ToString("MM/dd/yyyy hh:mm") == DateTime.Now.ToString("MM/dd/yyyy hh:mm"))
                         {
-                            await EmailHelper.CallAPI(appHealthConfig.ActionEndpoint);
+                            await EmailHelper.CheckForRestart(appHealthConfig);
                         }
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
 
                 }
             }
+
+            //if (hasStarted)
+            //{
+            //    hasStarted = false;
+            //}
         }
     }
 }
