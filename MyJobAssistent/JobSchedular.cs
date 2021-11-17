@@ -12,14 +12,24 @@ namespace MyJobAssistent
 {
     public partial class JobSchedular : Form
     {
+        AppHealthActionConfig _appHealthAction;
         public JobSchedular()
         {
             InitializeComponent();
         }
 
+        public JobSchedular(AppHealthActionConfig appHealthAction)
+        {
+            InitializeComponent();
+            _appHealthAction = appHealthAction;
+            txtEndPoint.Text = appHealthAction.EndPoint;
+            txtJobEndPoint.Text = appHealthAction.ActionEndpoint;
+            cmbBoxJobType.Text = appHealthAction.ActionEndpointType;
+        }
+
         private void btnSchedule_Click(object sender, EventArgs e)
         {
-            DateSchedular schedular = new DateSchedular(false);
+            DateSchedular schedular = new DateSchedular(true);
             schedular.ShowDialog();
         }
 

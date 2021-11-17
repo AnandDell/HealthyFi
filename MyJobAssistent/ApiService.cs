@@ -12,15 +12,15 @@ namespace MyJobAssistent
 {
     public class ApiService : IApiService
     {
-        List<AppHealthConfig> _appHealthConfigs;
+        List<AppHealthActionConfig> _appHealthConfigs;
         public ApiService()
         {
-            _appHealthConfigs = new List<AppHealthConfig>
+            _appHealthConfigs = new List<AppHealthActionConfig>
             {
-                new AppHealthConfig{ EndpointName= "FirstPanel", EndPoint = "https://papi.liveoptics-dev.com/v2/api/health", ApiType="Web API", BackColor = Color.Red },
-                new AppHealthConfig{ EndpointName= "SecondPanel", EndPoint = "https://restartservice.free.beeceptor.com/", ApiType="Web API", BackColor = Color.Red }
+                new AppHealthActionConfig{ EndpointName= "FirstApi", EndPoint = "https://papi.liveoptics-dev.com/v2/api/health", ApiType="Web API" },
+                new AppHealthActionConfig{ EndpointName= "SecondApi", EndPoint = "http://dellrestapi-env.eba-enmpcutb.us-east-2.elasticbeanstalk.com/health", ApiType="Web API" }
             };
-        }
+        }        
 
         public async Task<List<AppHealthConfig>> GetHealthStatus()
         {
@@ -30,7 +30,7 @@ namespace MyJobAssistent
             {
                 AppHealthStatus appHealthStatus = await GetApiHealth(appHealthConfig);
 
-                if (appHealthStatus.Status == "Healthy")
+                if (appHealthStatus.Status == AppHealthStatus.Healthy)
                     appHealthConfig.BackColor = Color.Green;
 
                 appHealthConfigs.Add(appHealthConfig);
@@ -49,6 +49,12 @@ namespace MyJobAssistent
                 var appHealthStatus = JsonConvert.DeserializeObject<AppHealthStatus>(content);
                 return appHealthStatus;
             }
+        }
+
+        public async Task<List<AppHealthActionConfig>> SaveHealthConfigs(List<AppHealthActionConfig> appHealthConfigs)
+        {
+            _appHealthConfigs = appHealthConfigs;
+            return appHealthConfigs;
         }
     }
 }
