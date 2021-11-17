@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -12,13 +13,27 @@ namespace MyJobAssistent
 {
     public class ApiService
     {
-        public static List<AppHealthActionConfig> _appHealthConfigs = new List<AppHealthActionConfig>
+        List<AppHealthActionConfig> _appHealthConfigs = new List<AppHealthActionConfig>
             {
                 new AppHealthActionConfig{ EndpointName= "FirstApi", EndPoint = "https://papi.liveoptics-dev.com/v2/api/health", ApiType="Web API" },
                 new AppHealthActionConfig{ EndpointName= "SecondApi", EndPoint = "http://dellrestapi-env.eba-enmpcutb.us-east-2.elasticbeanstalk.com/health", ApiType="Web API" }
             };
         public ApiService()
         {
+            //deserialize
+            try
+            {
+                string dir = @"c:\temp";
+                string serializationFile = Path.Combine(dir, "AppHealthActionConfig.bin");
+                using (Stream stream = File.Open(serializationFile, FileMode.Open))
+                {
+                    var bformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+
+                    List<AppHealthActionConfig> appHealthActionConfigs = (List<AppHealthActionConfig>)bformatter.Deserialize(stream);
+                    _appHealthConfigs = appHealthActionConfigs;
+                }
+            }
+            catch { }
         }        
 
         public async Task<List<AppHealthActionConfig>> GetHealthStatusList()
@@ -48,7 +63,7 @@ namespace MyJobAssistent
             return _appHealthConfigs;
         }
 
-        public async Task<AppHealthStatus> GetApiHealth(AppHealthConfig appHealthConfig)
+        public async Task<AppHealthStatus> GetApiHealth(AppHealthActionConfig appHealthConfig)
         {
             using (var httpClient = new HttpClient())
             {
@@ -63,6 +78,16 @@ namespace MyJobAssistent
         public async Task<List<AppHealthActionConfig>> SaveHealthConfigs(List<AppHealthActionConfig> appHealthConfigs)
         {
             _appHealthConfigs = appHealthConfigs;
+            string dir = @"c:\temp";
+            string serializationFile = Path.Combine(dir, "AppHealthActionConfig.bin");
+
+            //serialize
+            using (Stream stream = File.Open(serializationFile, FileMode.Create))
+            {
+                var bformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+
+                bformatter.Serialize(stream, appHealthConfigs);
+            }
             return appHealthConfigs;
         }
 
