@@ -102,7 +102,7 @@ namespace MyJobAssistent
         private async void JobAssistent_LoadAsync(object sender, EventArgs e)
         {
             Timer timer = new Timer();
-            timer.Interval = (60 * 1000); // sleep for 1 minute
+            timer.Interval = (10 * 1000); // sleep for 1 minute
             timer.Tick += Timer_Tick;
             timer.Start();
         }
@@ -112,7 +112,7 @@ namespace MyJobAssistent
             var configs = await _apiService.GetAppHealthActionConfigList();
             foreach (var appHealthConfig in configs)
             {
-                if (appHealthConfig.IsTriggeredByEmail)
+                //if (appHealthConfig.IsTriggeredByEmail)
                 {
                     await EmailHelper.CheckForRestart(appHealthConfig);
                 }

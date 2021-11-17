@@ -137,7 +137,10 @@ namespace MyJobAssistent
 
         private async void btnAnalyzeAndSend_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Analysis sent");
+            EmailHelper.SendMail(await _apiService.GetHealthStatusList());
+
+            MessageBox.Show("Email sent successfully.");
+
             this.Close();
         }
 
