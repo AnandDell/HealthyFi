@@ -22,6 +22,8 @@ namespace MyJobAssistent
         {
             InitializeComponent();
             AppHealthAction = appHealthAction;
+            dateTimePicker1.Format = DateTimePickerFormat.Custom;
+            dateTimePicker1.CustomFormat = "MM/dd/yyyy hh:mm:ss";
             dateTimePicker1.Value = AppHealthAction.TimeToExecute;
             checkBox1.Enabled = AppHealthAction.Daily;
             checkBox2.Enabled = AppHealthAction.Weekly;
