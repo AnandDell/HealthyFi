@@ -158,6 +158,10 @@ namespace MyJobAssistent
                     {
                         appHealthActionConfig.ActionEndpoint = config.ActionEndpoint;
                         appHealthActionConfig.ActionEndpointType = config.ActionEndpointType;
+                        appHealthActionConfig.IsTriggeredByDateTime = config.IsTriggeredByDateTime;
+                        appHealthActionConfig.IsTriggeredByEmail = config.IsTriggeredByEmail;
+                        appHealthActionConfig.IsTriggeredByNotification = config.IsTriggeredByNotification;
+                        
                     }
                     appHealthConfigs.Add(appHealthActionConfig);
                 }

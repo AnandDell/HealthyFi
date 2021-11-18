@@ -31,7 +31,7 @@ namespace MyJobAssistent
             schedular.ShowDialog();
             AppHealthAction.EndPoint = txtEndPoint.Text;
             AppHealthAction.ActionEndpoint = txtJobEndPoint.Text;
-            AppHealthAction.ActionEndpointType = cmbBoxJobType.Text;
+            AppHealthAction.ActionEndpointType = string.IsNullOrWhiteSpace(cmbBoxJobType.Text)? "Web API": cmbBoxJobType.Text;
             AppHealthAction.IsTriggeredByDateTime = true;
             AppHealthAction.IsTriggeredByEmail = false;
             AppHealthAction.IsTriggeredByNotification = false;
@@ -43,7 +43,7 @@ namespace MyJobAssistent
             schedular.ShowDialog();
             AppHealthAction.EndPoint = txtEndPoint.Text;
             AppHealthAction.ActionEndpoint = txtJobEndPoint.Text;
-            AppHealthAction.ActionEndpointType = cmbBoxJobType.Text;
+            AppHealthAction.ActionEndpointType = string.IsNullOrWhiteSpace(cmbBoxJobType.Text) ? "Web API" : cmbBoxJobType.Text;
             AppHealthAction.IsTriggeredByDateTime = false;
             AppHealthAction.IsTriggeredByEmail = true;
             AppHealthAction.IsTriggeredByNotification = false;
@@ -55,7 +55,7 @@ namespace MyJobAssistent
             schedular.ShowDialog();
             AppHealthAction.EndPoint = txtEndPoint.Text;
             AppHealthAction.ActionEndpoint = txtJobEndPoint.Text;
-            AppHealthAction.ActionEndpointType = cmbBoxJobType.Text;
+            AppHealthAction.ActionEndpointType = string.IsNullOrWhiteSpace(cmbBoxJobType.Text) ? "Web API" : cmbBoxJobType.Text;
             AppHealthAction.IsTriggeredByDateTime = false;
             AppHealthAction.IsTriggeredByEmail = false;
             AppHealthAction.IsTriggeredByNotification = true;

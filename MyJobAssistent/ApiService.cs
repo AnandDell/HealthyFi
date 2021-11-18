@@ -21,7 +21,7 @@ namespace MyJobAssistent
         {
             try
             {
-                string json = File.ReadAllText("AppHealthActionConfig.json");
+                string json = File.ReadAllText(@"C:\temp\AppHealthActionConfig.json");
                 var appHealthActionConfigs = JsonConvert.DeserializeObject<List<AppHealthActionConfig>>(json);
                 _appHealthConfigs = appHealthActionConfigs;
             }
@@ -72,7 +72,7 @@ namespace MyJobAssistent
         public async Task<List<AppHealthActionConfig>> SaveHealthConfigs(List<AppHealthActionConfig> appHealthConfigs)
         {
             _appHealthConfigs = appHealthConfigs;
-            File.WriteAllText("AppHealthActionConfig.json", JsonConvert.SerializeObject(appHealthConfigs));
+            File.WriteAllText(@"C:\temp\AppHealthActionConfig.json", JsonConvert.SerializeObject(appHealthConfigs));
             return appHealthConfigs;
         }
 
@@ -82,7 +82,7 @@ namespace MyJobAssistent
             if (appHealthConfigObj == null)
             {
                 _appHealthConfigs.Add(appHealthConfig);
-                File.WriteAllText("AppHealthActionConfig.json", JsonConvert.SerializeObject(_appHealthConfigs));
+                File.WriteAllText(@"C:\temp\AppHealthActionConfig.json", JsonConvert.SerializeObject(_appHealthConfigs));
                 return _appHealthConfigs;
             }
 
@@ -94,7 +94,7 @@ namespace MyJobAssistent
                     _appHealthConfigs[counter] = appHealthConfig;
                 }
             }
-            File.WriteAllText("AppHealthActionConfig.json", JsonConvert.SerializeObject(_appHealthConfigs));
+            File.WriteAllText(@"C:\temp\AppHealthActionConfig.json", JsonConvert.SerializeObject(_appHealthConfigs));
             return _appHealthConfigs;
         }
     }

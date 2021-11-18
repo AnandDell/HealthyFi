@@ -260,7 +260,7 @@ namespace MyJobAssistent
                 _sb.Append("\t\t</td>\n");
 
                 _sb.Append("\t\t<td width='100' style='margin-left: 20;'>\n");
-                _sb.Append("\t\t\t" + item.ApiType + "\t\t\t");
+                _sb.Append("\t\t\t" + "Web API" + "\t\t\t");
                 _sb.Append("\t\t</td>\n");
 
                 _sb.Append("\t\t<td>\n");

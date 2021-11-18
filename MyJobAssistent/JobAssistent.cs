@@ -128,7 +128,7 @@ namespace MyJobAssistent
                     }
                     else if (appHealthConfig.IsTriggeredByDateTime)
                     {
-                        if (appHealthConfig.TimeToExecute<= DateTime.Now)
+                        if (appHealthConfig.TimeToExecute <= DateTime.Now)
                         {
                             await EmailHelper.CallAPI(appHealthConfig.ActionEndpoint);
                         }
