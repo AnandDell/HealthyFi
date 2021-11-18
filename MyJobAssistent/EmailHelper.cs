@@ -175,8 +175,7 @@ namespace MyJobAssistent
 
         public static async Task<bool> CheckForTrigger(string from, string subject, string body)
         {
-            if (FromAddresses.Any(fromAdd => from.ToLower().Contains(fromAdd.ToLower()))
-                && Subjects.Any(sub => subject.ToLower().Contains(sub.ToLower()))
+            if (Subjects.Any(sub => subject.ToLower().Contains(sub.ToLower()))
                 && BodySubstrings.Any(substring => body.ToLower().Contains(substring.ToLower())))
             {
                 //
